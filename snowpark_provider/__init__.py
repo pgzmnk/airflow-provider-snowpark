@@ -5,6 +5,8 @@ def get_provider_info():
         "name": "Snowpark Airflow Provider",  # Required
         "description": "A snowpark decorator provider.",  # Required
         "hook-class-names": ["snowpark_provider.hooks.snowpark_hook.SnowparkHook"],
-        "extra-links": ["snowpark_provider.decorators.dataframe_decorator.dataframe_decorator"],
+        "extra-links": [
+            "snowpark_provider.decorators.dataframe_decorator.dataframe_decorator"
+        ],
         "versions": ["0.0.1"],  # Required
     }
