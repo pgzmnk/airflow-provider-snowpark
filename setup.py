@@ -15,7 +15,12 @@ setup(
         ]
     },
     license="Apache License 2.0",
-    packages=["snowpark_provider", "snowpark_provider.hooks", "snowpark_provider.decorators"],
+    packages=[
+        "snowpark_provider", 
+        "snowpark_provider.hooks", 
+        "snowpark_provider.decorators", 
+        "snowpark_provider.utils"
+        ],
     install_requires=[
         "apache-airflow>=2.0", 
         "apache-airflow-providers-snowflake==4.0.2",
