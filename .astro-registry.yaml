@@ -10,7 +10,7 @@ display-name: Snowpark Provider
 description: Snowpark decorator for Apache Airflow
 # URL for where user should find the documentation for the Provider. This could be a link to the README,
 # an external docs site, etc.
-docs_url: https://github.com/astronomer/airflow-provider-sample/blob/main/README.md
+docs_url: https://github.com/pgzmnk/airflow-provider-snowpark/blob/main/README.md
 
 # The next sections should be organized by module type (e.g. operators, hooks, functions, decorators, etc.).
 #
@@ -22,5 +22,5 @@ hooks:
   - module: snowpark_provider.hooks.snowpark_hook.SnowparkHook
 
 decorators:
-  - module: snowpark_provider.decorators.snowpark_decorator.dataframe
+  - module: snowpark_provider.decorators.snowpark_decorator.dataframe_decorator
 

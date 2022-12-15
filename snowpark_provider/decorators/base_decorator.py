@@ -63,7 +63,7 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
     :param op_kwargs: a dictionary of keyword arguments that will get unpacked in your function (templated)
     :param op_args: a list of positional arguments that will get unpacked when
         calling your callable (templated)
-    :return If the return value of the handler function is a Snowspark dataframe,
+    :return If the return value of the handler function is a Snowpark dataframe,
       it's converted to temporary Snowflake table.
     """
 

@@ -5,7 +5,7 @@ Requires the unittest, pytest Python libraries.
 
 Run test:
 
-    python3 -m unittest tests.hooks.test_sample_hook.TestSnowparkHook
+    python3 -m unittest tests.hooks.test_snowpark_hook.TestSnowparkHook
 
 """
 

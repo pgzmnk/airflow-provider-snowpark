@@ -1,11 +1,8 @@
-"""Setup.py for the Astronomer sample Airflow provider package. Built from datadog provider package for now."""
-
 from setuptools import find_packages, setup
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-"""Perform the package airflow-provider-sample setup."""
 setup(
     name="airflow-provider-snowpark",
     version="0.0.1",

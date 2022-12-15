@@ -67,9 +67,9 @@ def dataframe_decorator(
     schema: str | None = None,
     **kwargs,
 ) -> TaskDecorator:
-    """Enables Snowspark tasks.
+    """Enables Snowpark tasks.
 
-    Returned Snowspark dataframes are stored either as Snowflake tables or
+    Returned Snowpark dataframes are stored either as Snowflake tables or
     serialized Pandas dataframes - depending on the need of downstream tasks.
 
     By identifying the parameters as `Table` objects, astro knows to automatically convert those

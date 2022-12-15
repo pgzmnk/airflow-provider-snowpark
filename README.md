@@ -52,6 +52,6 @@ There are plans to create the `@declare_udf` decorator to declare user defined f
     │   └── test_snowpark_hook.py
     └── decorators
         ├── __init__.py
-        └── test_snowspark_decorator.py
+        └── test_snowpark_decorator.py
 ```
 
