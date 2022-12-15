@@ -4,7 +4,7 @@ def get_provider_info():
         "package-name": "airflow-provider-sample",  # Required
         "name": "Sample Airflow Provider",  # Required
         "description": "A sample template for airflow providers.",  # Required
-        "hook-class-names": ["sample_provider.hooks.sample_hook.SampleHook"],
-        "extra-links": ["sample_provider.operators.sample_operator.ExtraLink"],
+        "hook-class-names": ["snowpark_provider.hooks.sample_hook.SampleHook"],
+        "extra-links": ["snowpark_provider.operators.sample_operator.ExtraLink"],
         "versions": ["0.0.1"],  # Required
     }
