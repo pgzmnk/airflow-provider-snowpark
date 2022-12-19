@@ -22,6 +22,15 @@ The SDK currently exposes the Snowpark `@dataframe_decorator` to share Snowpark 
 
 There are plans to create the `@declare_udf` decorator to declare user defined functions as tasks, and the `@stored_procedure` decorator to execute code as stored procedures.
 
+
+## Getting started
+
+While the project is under development, you can install the package from git with:
+
+```
+pip install git+https://github.com/pgzmnk/airflow-provider-snowpark.git
+```
+
 ### Repository structure
 
 
