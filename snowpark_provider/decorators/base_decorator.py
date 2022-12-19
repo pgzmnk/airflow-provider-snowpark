@@ -130,8 +130,8 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
         )
         if first_table:
             self.conn_id = self.conn_id or first_table.conn_id  # type: ignore
-            self.database = self.database or first_table.metadata.get("database")  # type: ignore
-            self.schema = self.schema or first_table.metadata.get("schema")  # type: ignore
+            self.database = self.database or first_table.metadata.database or first_table.metadata.get("database")  # type: ignore
+            self.schema = self.schema or first_table.metadata.schema or first_table.metadata.get("schema")  # type: ignore
         else:
             if not self.conn_id:
                 raise ValueError("You need to provide a table or a connection id")
