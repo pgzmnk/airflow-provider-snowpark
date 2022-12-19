@@ -141,7 +141,6 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
         conn = hook.get_conn()
         snowpark_session = hook.get_snowpark_session()
         op_kwargs = dict(self.op_kwargs)
-        op_kwargs["snowpark_session"] = snowpark_session
 
         # Load dataframes from arguments tagged with `Table`.
         self.op_args = load_op_arg_table_into_dataframe(
@@ -156,9 +155,10 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
             self.columns_names_capitalization,
             self.log,
         )
+        self.op_kwargs["snowpark_session"] = snowpark_session
 
         function_output = self.python_callable(
-            snowpark_session, *self.op_args, **self.op_kwargs
+         *self.op_args, **self.op_kwargs
         )
 
         if function_output:
