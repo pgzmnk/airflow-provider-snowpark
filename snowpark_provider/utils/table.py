@@ -63,7 +63,6 @@ class BaseTable:
 
     name: str = field(default="")
     conn_id: str = field(default="")
-    snowflake_conn_id: str = field(default="")
     # Setting converter allows passing a dictionary to metadata arg
     metadata: Metadata = field(
         factory=Metadata,

@@ -155,7 +155,7 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
             self.columns_names_capitalization,
             self.log,
         )
-        self.op_kwargs["snowpark_session"] = snowpark_session
+        # self.op_kwargs["snowpark_session"] = snowpark_session
 
         function_output = self.python_callable(
          *self.op_args, **self.op_kwargs
@@ -172,7 +172,7 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
                 elif isinstance(function_output, snowflake.snowpark.table.Table):
                     table_name = function_output.table_name
                 function_output.write.mode("overwrite").save_as_table(table_name)
-                output = Table(name=table_name, conn_id=self.conn_id, snowflake_conn_id=self.conn_id)
+                output = Table(name=table_name, conn_id=self.conn_id)
             else:
                 output = function_output
 
