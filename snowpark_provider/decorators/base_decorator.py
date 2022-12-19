@@ -172,7 +172,7 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
                 elif isinstance(function_output, snowflake.snowpark.table.Table):
                     table_name = function_output.table_name
                 function_output.write.mode("overwrite").save_as_table(table_name)
-                output = Table(name=table_name, conn_id=self.conn_id)
+                output = Table(name=table_name, conn_id=self.conn_id, snowflake_conn_id=self.conn_id)
             else:
                 output = function_output
 
