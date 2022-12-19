@@ -130,8 +130,8 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
         )
         if first_table:
             self.conn_id = self.conn_id or first_table.conn_id  # type: ignore
-            self.database = self.database or first_table.metadata.database # to-do: or first_table.metadata.get("database")  # type: ignore
-            self.schema = self.schema or first_table.metadata.schema # to-do: or first_table.metadata.get("schema")  # type: ignore
+            self.database = self.database or first_table.metadata.get("database") # first_table.metadata.database # to-do: or first_table.metadata.get("database")  # type: ignore
+            self.schema = self.schema or first_table.metadata.get("schema") # first_table.metadata.schema # to-do: or first_table.metadata.get("schema")  # type: ignore
         else:
             if not self.conn_id:
                 raise ValueError("You need to provide a table or a connection id")
@@ -199,12 +199,14 @@ def load_op_arg_table_into_dataframe(
 
     for arg in op_args_list:
         current_arg = full_spec.args.pop(0)
-        if full_spec.annotations.get(
-            current_arg
-        ) == snowflake.snowpark.table.Table and isinstance(arg, BaseTable):
+        if full_spec.annotations.get(current_arg) == Table:
             log.debug("Found Snowpark Table, retrieving dataframe from table %s", arg)
-            ret_args.append(snowpark_session.table(arg))
+            snowpark_session = SnowparkHook(
+                snowflake_conn_id=arg.conn_id
+            ).get_snowpark_session()
+            ret_args.append(snowpark_session.table(arg.name))
         else:
+            print("Did not find Snowpark Table, passing raw value: %s", arg)
             ret_args.append(arg)
     return tuple(ret_args)
 

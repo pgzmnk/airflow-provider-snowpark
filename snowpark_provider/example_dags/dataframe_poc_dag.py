@@ -29,14 +29,14 @@ def dataframe_poc_dag():
         return df
 
     @dataframe_decorator(conn_id="snowflake_default", task_id="task_2")
-    def task_2_func(snowpark_session, df: Table):
+    def task_2_func(df: Table, snowpark_session):
         print("This is output from the upstream task:")
         print(df)
         df.show()
         return df
 
     task_1 = task_1_func()
-    task_2 = task_2_func(df=task_1)
+    task_2 = task_2_func(task_1)
 
 
 dag_obj = dataframe_poc_dag()

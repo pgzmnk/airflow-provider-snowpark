@@ -22,6 +22,7 @@ from airflow.utils import timezone
 
 from snowpark_provider.decorators.dataframe_decorator import dataframe_decorator
 from snowpark_provider.example_dags.dataframe_poc_dag import dag_obj
+
 from tests import test_utils
 
 log = logging.getLogger(__name__)
