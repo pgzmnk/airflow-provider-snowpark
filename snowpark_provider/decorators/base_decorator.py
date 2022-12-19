@@ -155,7 +155,7 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
             self.columns_names_capitalization,
             self.log,
         )
-        # self.op_kwargs["snowpark_session"] = snowpark_session
+        self.op_kwargs["snowpark_session"] = snowpark_session
 
         function_output = self.python_callable(
          *self.op_args, **self.op_kwargs
