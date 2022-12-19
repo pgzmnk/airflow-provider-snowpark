@@ -201,9 +201,7 @@ def load_op_arg_table_into_dataframe(
         current_arg = full_spec.args.pop(0)
         if full_spec.annotations.get(current_arg) == Table:
             log.debug("Found Snowpark Table, retrieving dataframe from table %s", arg)
-            snowpark_session = SnowparkHook(
-                snowflake_conn_id=arg.conn_id
-            ).get_snowpark_session()
+            snowpark_session = SnowparkHook(snowflake_conn_id=arg.conn_id).get_snowpark_session()
             ret_args.append(snowpark_session.table(arg.name))
         else:
             print("Did not find Snowpark Table, passing raw value: %s", arg)
@@ -234,9 +232,7 @@ def load_op_kwarg_table_into_dataframe(
                 "Found Snowpark Table, retrieving dataframe from table %s", v.name
             )
             print("Found Snowpark Table, retrieving dataframe from table %s", v.name)
-            snowpark_session = SnowparkHook(
-                snowflake_conn_id=v.conn_id
-            ).get_snowpark_session()
+            snowpark_session = SnowparkHook(snowflake_conn_id=v.conn_id).get_snowpark_session()
             out_dict[k] = snowpark_session.table(v.name)
         # To-do: Handle pandas dataframe arguments
         else:
