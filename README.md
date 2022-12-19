@@ -25,10 +25,18 @@ There are plans to create the `@declare_udf` decorator to declare user defined f
 
 ## Getting started
 
+### Install
+
 While the project is under development, you can install the package from git with:
 
 ```
 pip install git+https://github.com/pgzmnk/airflow-provider-snowpark.git
+```
+
+### Test
+
+```
+python3 -m unittest tests.decorators.test_dataframe_decorator.TestSnowparkDecorator 
 ```
 
 ### Repository structure
