@@ -1,0 +1,1 @@
+from .dataframe_decorator import dataframe_decorator as snowpark_df_decorator

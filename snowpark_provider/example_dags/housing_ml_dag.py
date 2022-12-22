@@ -11,7 +11,7 @@ from snowflake.snowpark import version as v
 from snowflake.snowpark.functions import col, sproc, udf
 from snowflake.snowpark.session import Session
 
-from snowpark_provider.decorators.dataframe_decorator import dataframe_decorator
+from snowpark_provider.decorators import snowpark_df_decorator
 from snowpark_provider.utils.table import Table
 
 # to-do: declare global snowpark_session.add_packages(...)
@@ -42,7 +42,7 @@ def housing_ml_dag():
         4. Show results
     """
 
-    @dataframe_decorator(
+    @snowpark_df_decorator(
         conn_id="snowflake_default", task_id="register_sproc_to_create_model"
     )
     def register_sproc_to_create_model_func(snowpark_session: Session):
@@ -136,7 +136,7 @@ def housing_ml_dag():
 
         print(train_model_sp.__dict__)
 
-    @dataframe_decorator(conn_id="snowflake_default", task_id="define_predict_udf")
+    @snowpark_df_decorator(conn_id="snowflake_default", task_id="define_predict_udf")
     def define_predict_udf_func(snowpark_session: Session):
 
         snowpark_session.add_packages(PACKAGES)
@@ -196,7 +196,7 @@ def housing_ml_dag():
         # to-do: return predict
         # AttributeError: Can't pickle local object 'dataframe_poc_dag.<locals>.define_predict_udf_func.<locals>.predict'
 
-    @dataframe_decorator(conn_id="snowflake_default", task_id="do_prediction")
+    @snowpark_df_decorator(conn_id="snowflake_default", task_id="do_prediction")
     def do_prediction_func(snowpark_session: Session):
         snowpark_session.sql("USE SCHEMA SNOWPARK_DEMO").collect()
 
@@ -215,7 +215,7 @@ def housing_ml_dag():
             ).alias("DELTA_PCT")
         ).limit(20)
 
-    @dataframe_decorator(conn_id="snowflake_default", task_id="show_results")
+    @snowpark_df_decorator(conn_id="snowflake_default", task_id="show_results")
     def show_results_func(df: Table, snowpark_session: Session):
         df2 = df.select("ACTUAL_LABEL", "PREDICTION", "DELTA_PCT")
         df2.show()

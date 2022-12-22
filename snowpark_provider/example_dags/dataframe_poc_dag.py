@@ -4,7 +4,7 @@ from airflow.decorators import dag, task
 from airflow.utils.dates import days_ago
 from snowflake.snowpark.functions import col
 
-from snowpark_provider.decorators.dataframe_decorator import dataframe_decorator
+from snowpark_provider.decorators import snowpark_df_decorator
 from snowpark_provider.utils.table import Table
 
 
@@ -19,7 +19,7 @@ def dataframe_poc_dag():
     task_1 creates a Snowpark dataframe and passes it to task_2
     """
 
-    @dataframe_decorator(conn_id="snowflake_default", task_id="task_1")
+    @snowpark_df_decorator(conn_id="snowflake_default", task_id="task_1")
     def task_1_func(snowpark_session):
         df = snowpark_session.create_dataframe([1, 2, 3, 4]).to_df(
             "snowpark_task_function"
@@ -28,7 +28,7 @@ def dataframe_poc_dag():
         df.write.mode("overwrite").save_as_table("custom_table_saved_with_session")
         return df
 
-    @dataframe_decorator(conn_id="snowflake_default", task_id="task_2")
+    @snowpark_df_decorator(conn_id="snowflake_default", task_id="task_2")
     def task_2_func(df: Table, snowpark_session):
         print("This is output from the upstream task:")
         print(df)
