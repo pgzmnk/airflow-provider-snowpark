@@ -24,7 +24,7 @@ setup(
     install_requires=[
         "apache-airflow>=2.0",
         "apache-airflow-providers-snowflake==4.0.2",
-        "snowflake-snowpark-python==1.0.0",
+        "snowflake-snowpark-python[pandas]==1.0.0",
     ],
     setup_requires=["setuptools", "wheel"],
     author="Plinio Guzman",
