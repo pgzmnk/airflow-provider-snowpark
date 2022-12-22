@@ -8,6 +8,7 @@ from typing import Any, Callable, Sequence
 from airflow.decorators.base import DecoratedOperator, task_decorator_factory
 from airflow.exceptions import AirflowException
 from airflow.operators.python import PythonOperator
+import pandas as pd
 
 from snowpark_provider.hooks.snowpark_hook import SnowparkHook
 from snowpark_provider.utils.table import find_first_table, Table
@@ -121,63 +122,7 @@ class BaseSnowparkOperator(DecoratedOperator, PythonOperator):
         )
 
     def execute(self, context: Context) -> Table | list:
-        first_table = find_first_table(
-            op_args=self.op_args,  # type: ignore
-            op_kwargs=self.op_kwargs,
-            python_callable=self.python_callable,
-            parameters=self.parameters or {},  # type: ignore
-            context=context,
-        )
-        if first_table:
-            self.conn_id = self.conn_id or first_table.conn_id  # type: ignore
-        else:
-            if not self.conn_id:
-                raise ValueError("You need to provide a table or a connection id")
-
-        # Set real sessions as an argument to the function.
-        hook = SnowparkHook(snowflake_conn_id=self.conn_id)
-        conn = hook.get_conn()
-        snowpark_session = hook.get_snowpark_session()
-        op_kwargs = dict(self.op_kwargs)
-
-        # Load dataframes from arguments tagged with `Table`.
-        self.op_args = load_op_arg_table_into_dataframe(
-            self.op_args,
-            self.python_callable,
-            self.columns_names_capitalization,
-            self.log,
-        )
-        self.op_kwargs = load_op_kwarg_table_into_dataframe(
-            self.op_kwargs,
-            self.python_callable,
-            self.columns_names_capitalization,
-            self.log,
-        )
-        self.op_kwargs["snowpark_session"] = snowpark_session
-
-        function_output = self.python_callable(
-         *self.op_args, **self.op_kwargs
-        )
-
-        if function_output:
-            if isinstance(
-                function_output, snowflake.snowpark.dataframe.DataFrame
-            ) or isinstance(function_output, snowflake.snowpark.table.Table):
-                if isinstance(function_output, snowflake.snowpark.dataframe.DataFrame):
-                    # Snowpark DataFrames stored in temp tables, in temp schema
-                    _table_name = "__".join(["TMP", self.dag_id, self.task_id])
-                    table_name = ".".join([conn.database, self.TMP_SCHEMA, _table_name])
-                elif isinstance(function_output, snowflake.snowpark.table.Table):
-                    table_name = function_output.table_name
-                function_output.write.mode("overwrite").save_as_table(table_name)
-                output = Table(name=table_name, conn_id=self.conn_id)
-            else:
-                output = function_output
-
-            try:
-                return output
-            finally:
-                snowpark_session.close()
+        pass
 
 
 def load_op_arg_table_into_dataframe(
@@ -199,7 +144,9 @@ def load_op_arg_table_into_dataframe(
         current_arg = full_spec.args.pop(0)
         if full_spec.annotations.get(current_arg) == Table:
             log.debug("Found Snowpark Table, retrieving dataframe from table %s", arg)
-            snowpark_session = SnowparkHook(snowflake_conn_id=arg.conn_id).get_snowpark_session()
+            snowpark_session = SnowparkHook(
+                snowflake_conn_id=arg.conn_id
+            ).get_snowpark_session()
             ret_args.append(snowpark_session.table(arg.name))
         else:
             print("Did not find Snowpark Table, passing raw value: %s", arg)
@@ -230,7 +177,9 @@ def load_op_kwarg_table_into_dataframe(
                 "Found Snowpark Table, retrieving dataframe from table %s", v.name
             )
             print("Found Snowpark Table, retrieving dataframe from table %s", v.name)
-            snowpark_session = SnowparkHook(snowflake_conn_id=v.conn_id).get_snowpark_session()
+            snowpark_session = SnowparkHook(
+                snowflake_conn_id=v.conn_id
+            ).get_snowpark_session()
             out_dict[k] = snowpark_session.table(v.name)
         # To-do: Handle pandas dataframe arguments
         else:
